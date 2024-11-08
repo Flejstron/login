@@ -2,8 +2,9 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
-const cors = require('cors');
+const cors = require("cors");
 const fs = require("fs");
+const https = require("https"); // Import the https module
 
 const app = express(); // Initialize app here
 app.use(cors()); // Apply CORS middleware
@@ -11,6 +12,11 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000; // Railway automatically sets the PORT
 const JWT_SECRET = process.env.JWT_SECRET || "default_secret"; // Secret key for JWT, use environment variable
+
+// Load SSL certificate files
+const privateKey = fs.readFileSync("private-key.pem", "utf8");
+const certificate = fs.readFileSync("certificate.pem", "utf8");
+const credentials = { key: privateKey, cert: certificate };
 
 // Functions to load and save users from/to .txt file
 function loadUsers() {
@@ -115,7 +121,7 @@ app.get("/protected", (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Create HTTPS server
+https.createServer(credentials, app).listen(PORT, () => {
+  console.log(`HTTPS Server is running on port ${PORT}`);
 });
