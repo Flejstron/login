@@ -7,8 +7,8 @@ const fs = require('fs');
 const app = express();
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 3000;
-const JWT_SECRET = "tvoje_tajna_frase"; // Toto je tajný klíč pro JWT, který by měl být uložený bezpečně
+const PORT = process.env.PORT || 3000;  // Railway automaticky nastaví PORT
+const JWT_SECRET = process.env.JWT_SECRET || 'default_secret';  // Tajný klíč pro JWT, použij proměnnou prostředí
 
 // Funkce pro ukládání a načítání uživatelů z .txt souboru
 function loadUsers() {
