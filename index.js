@@ -2,9 +2,11 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 const fs = require("fs");
 
-const app = express();
+const app = express(); // Initialize app here
+app.use(cors()); // Apply CORS middleware
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000; // Railway automatically sets the PORT
@@ -63,7 +65,6 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 // User login
 app.post("/login", async (req, res) => {
